@@ -1,0 +1,336 @@
+﻿@model PersonalApp.Models.Todos
+
+@{
+    ViewBag.Title = "TodoList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List</title>
+    <style>
+        .todo-container {
+            background: #fff;
+            padding-bottom: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 1200px;
+            height: 70vh;
+            margin-left: 10%;
+            margin-top: 3%;
+        }
+
+        h1 {
+            /*margin: 0 0 20px;*/
+            text-align: center;
+            background-color: black;
+            color: white;
+            height: 15%;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            padding-top:10px;
+        }
+
+        .todo-input {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            margin-left: 20px;
+            margin-right: 20px;
+        }
+
+        #search-task {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+
+        button {
+            padding: 10px 15px;
+            background: #5cb85c;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .button-style {
+            padding: 10px 15px;
+            background-color: crimson;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+
+            button:hover {
+                background: #4cae4c;
+            }
+
+        #task-list {
+            margin-left: 20px;
+            margin-right: 20px;
+            list-style: none;
+            padding: 0;
+            max-height: 50vh;
+            overflow-y: auto;
+            border-top: 1px solid #ddd; /*
+            border-bottom: 1px solid #ddd;*/
+        }
+
+        .task {
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            /*   border-bottom: 1px solid #ddd;*/
+            
+        }
+
+            .task input[type="text"] {
+                border: none;
+                background: none;
+                flex: 1;
+                padding: 5px;
+                background-color: silver;
+                color: black;
+                padding: 10px 15px;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                min-width: 85%;
+            }
+
+                .task input[type="text"]:focus {
+                    outline: none;
+                    border-bottom: 1px solid #5cb85c;
+                }
+
+            .task .actions {
+                display: flex;
+                gap: 10px;
+            }
+
+            .task button {
+                background: none;
+                border: none;
+                cursor: pointer;
+                color: #888;
+            }
+
+                .task button:hover {
+                    color: #000;
+                }
+
+        .popup-form {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+
+            .popup-form .form-content {
+                display: flex;
+                flex-direction: column;
+            }
+
+                .popup-form .form-content div {
+                    margin-bottom: 10px;
+                }
+
+            .popup-form h2 {
+                margin-top: 0;
+            }
+
+            .popup-form input[type="submit"] {
+                padding: 10px 15px;
+                background: #5cb85c;
+                color: white;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+
+                .popup-form input[type="submit"]:hover {
+                    background: #4cae4c;
+                }
+
+
+        #close {
+            overflow: hidden;
+            position: relative;
+            border: none;
+            padding: 0;
+            width: 2em;
+            height: 2em;
+            border-radius: 50%;
+            background: transparent;
+            color: #5cb85c;
+            font: inherit;
+            text-indent: 100%;
+            cursor: pointer;
+            
+            &:focus{
+                outline: solid 0 transparent;
+                box-shadow: 0 0 0 2px #8ed0f9
+            }
+
+            &:hover {
+                background: rgba(29, 161, 142, .1)
+            }
+
+            &:before, &:after {
+                position: absolute;
+                top: 15%;
+                right: calc(50% - .0625em);
+                width: .125em;
+                height: 70%;
+                border-radius: .125em;
+                transform: rotate(45deg);
+                background: currentcolor;
+                content: ''
+            }
+
+            &:after {
+                transform: rotate(-45deg);
+            }
+
+        }
+    </style>
+</head>
+<body>
+    <div class="todo-container">
+        <h1>Daily Expense</h1>
+        <div class="todo-input">
+            <input type="text" id="search-task" placeholder="Search expenses..." onkeyup="filterTasks()">
+            <button onclick="redirectToAddPage()">Add Expense</button>
+        </div>
+
+        <ul id="task-list">
+            @foreach (var list in Model.todosList)
+            {
+                <li class="task" data-id="@list.id">
+                    <input type="text" value="@list.CategoryName : Rs/- @list.Amount" readonly />
+                    <div class="actions">
+                        @*<button class="button-style" onclick="editTask(this, @list.id, '@list.CategoryName', '@list.Date', '@list.Description', '@list.Amount')">Edit</button>*@
+                        <button style="padding: 10px 15px; background-color:darkblue; color: white; border: none; border-radius: 5px; cursor: pointer;"
+                                onclick="editTask(this, @list.id, '@list.CategoryName', '@list.Date', '@list.Description', '@list.Amount')">
+                            Edit
+                        </button>
+
+                        @using (Html.BeginForm("DeleteTodoItem", "TodoList", FormMethod.Post, new { @id = $"deleteForm_{list.id}" }))
+                        {
+                            @Html.Hidden("id", list.id)
+                            <input type="button" class="button-style" value="Delete" onclick="confirmDelete(@list.id)" />
+                        }
+                    </div>
+                </li>
+            }
+        </ul>
+    </div>
+
+    <div id="popupForm" class="popup-form" style="display:none;">
+        <div class="form-content">
+            <button id='close' onclick="closeForm()" style="margin-left: auto;">close</button>
+            <h2>Edit Task Details</h2>
+            @using (Html.BeginForm("EditTodoItem", "TodoList", FormMethod.Post))
+            {
+                @Html.Hidden("id", "", new { @id = "editId" })
+                <div>
+                    @Html.Label("Category", "Category")
+                    @Html.TextBox("Categories", null, new { @class = "", id = "editCategory", name = "Categories", readOnly = "readOnly" })
+                </div>
+                <div>
+                    @Html.Label("Date", "Date")
+                    @Html.TextBox("Date", null, new { @class = "", id = "editDate", name = "Date" })
+                </div>
+                <div>
+                    @Html.Label("Description", "Description")
+                    @Html.TextBox("Description", null, new { @class = "", id = "editDescription", name = "Description" })
+                </div>
+                <div>
+                    @Html.Label("Amount", "Amount")
+                    @Html.TextBox("Amount", null, new { @class = "", id = "editAmount", name = "Amount" })
+                </div>
+                <input type="submit" value="Submit">
+            }
+        </div>
+    </div>
+
+    <script>
+        function redirectToAddPage() {
+            window.location.href = '@Url.Action("Categories", "Category")';  // Replace with your actual URL or page
+        }
+
+        function editTask(button, id, category,date, description, amount) {
+            const form = document.getElementById('popupForm');
+            form.style.display = 'block';
+
+            document.getElementById('editId').value = id;
+            document.getElementById('editCategory').value = category;
+            document.getElementById('editDate').value = date;
+            document.getElementById('editDescription').value = description;
+            document.getElementById('editAmount').value = amount;
+            // Set today's date in the date input field
+
+            const dateInput = document.getElementById('editDate');
+            const today = new Date().toISOString().split('T')[0]; // Get today's date in YYYY-MM-DD format
+            dateInput.value = today;
+
+            // Set the ID value in the hidden input field
+            const idInput = document.getElementById('editId');
+            idInput.value = id;
+        }
+
+        function deleteTask(button) {
+            if (confirm('Are you sure you want to delete this task?')) {
+                const taskList = document.getElementById('task-list');
+                const task = button.closest('.task');
+                taskList.removeChild(task);
+            }
+        }
+
+        function filterTasks() {
+            const searchInput = document.getElementById('search-task');
+            const filter = searchInput.value.toLowerCase();
+            const tasks = document.querySelectorAll('#task-list .task');
+
+            tasks.forEach((task) => {
+                const taskText = task.querySelector('input[type="text"]').value.toLowerCase();
+                if (taskText.includes(filter)) {
+                    task.style.display = '';
+                } else {
+                    task.style.display = 'none';
+                }
+            });
+        }
+
+        function confirmDelete(id) {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!',
+                cancelButtonText: 'Cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('deleteForm_' + id).submit();
+                }
+            });
+        }
+
+        function closeForm() {
+            document.getElementById("popupForm").style.display = "none";
+        }
+    </script>
+</body>

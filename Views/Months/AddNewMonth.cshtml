@@ -1,0 +1,143 @@
+﻿@model PersonalApp.Models.Months.MonthsClass
+
+@{
+    ViewBag.Title = "AddNewMonth";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<head>
+    <title></title>
+</head>
+<link href='http://fonts.googleapis.com/css?family=Open+Sans+Condensed:300' rel='stylesheet' type='text/css'>
+<style type="text/css">
+    .form-style-8 {
+        font-family: 'Open Sans Condensed', arial, sans;
+        width: 700px;
+        padding: 30px;
+        background: #FFFFFF;
+        margin: 50px auto;
+        margin-top: 10%;
+        border-radius: 10px;
+        box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.22);
+        -moz-box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.22);
+        -webkit-box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.22);
+    }
+
+        .form-style-8 h2 {
+            border-top-right-radius: 10px;
+            border-top-left-radius: 10px;
+            background: black;
+            text-transform: uppercase;
+            font-family: 'Open Sans Condensed', sans-serif;
+            color: white;
+            font-size: 18px;
+            font-weight: 100;
+            padding: 20px;
+            margin: -30px -30px 30px -30px;
+        }
+
+        .form-style-8 input[type="text"],
+        .form-style-8 input[type="date"],
+        .form-style-8 input[type="datetime"],
+        .form-style-8 input[type="email"],
+        .form-style-8 input[type="number"],
+        .form-style-8 input[type="search"],
+        .form-style-8 input[type="time"],
+        .form-style-8 input[type="url"],
+        .form-style-8 input[type="password"],
+        .form-style-8 textarea,
+        .form-style-8 #texts,
+        .form-style-8 select {
+            box-sizing: border-box;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            outline: none;
+            display: block;
+            width: 100%;
+            padding: 7px;
+            border: none;
+            border-bottom: 1px solid #ddd;
+            background: transparent;
+            margin-bottom: 10px;
+            font: 16px Arial, Helvetica, sans-serif;
+            height: 45px;
+        }
+
+    #texts {
+       min-width: 600px;
+        border-bottom: 1px solid #ddd;
+        background: transparent;
+        margin-bottom: 10px;
+        font: 16px Arial, Helvetica, sans-serif;
+        height: 45px;
+    }
+
+    .form-style-8 textarea {
+        resize: none;
+        overflow: hidden;
+    }
+
+        .form-style-8 input[type="button"],
+        .form-style-8 input[type="submit"] {
+            -moz-box-shadow: inset 0px 1px 0px 0px #45D6D6;
+            -webkit-box-shadow: inset 0px 1px 0px 0px #45D6D6;
+            box-shadow: inset 0px 1px 0px 0px #45D6D6;
+            background-color: #2CBBBB;
+            border: 1px solid #27A0A0;
+            display: inline-block;
+            cursor: pointer;
+            color: #FFFFFF;
+            font-family: 'Open Sans Condensed', sans-serif;
+            font-size: 14px;
+            padding: 8px 18px;
+            text-decoration: none;
+            text-transform: uppercase;
+        }
+
+            .form-style-8 input[type="button"]:hover,
+            .form-style-8 input[type="submit"]:hover {
+                background: linear-gradient(to bottom, #34CACA 5%, #30C9C9 100%);
+                background-color: #34CACA;
+            }
+
+    .save-button {
+        background-color: #4CAF50; /* Green background */
+        border: none; /* Remove borders */
+        color: white; /* White text */
+        padding: 15px 32px; /* Add some padding */
+        text-align: center; /* Center the text */
+        text-decoration: none; /* Remove underline */
+        display: inline-block; /* Make the button inline-block */
+        font-size: 16px; /* Increase font size */
+        margin: 4px 2px; /* Add some margin */
+        cursor: pointer; /* Add a pointer cursor on hover */
+        border-radius: 12px; /* Add rounded corners */
+        transition-duration: 0.4s;
+        margin-left: 40%;/* Make the transition effect smoother */
+    }
+
+        .save-button:hover {
+            background-color: white; /* Change background on hover */
+            color: black; /* Change text color on hover */
+            border: 2px solid #4CAF50; /* Add a border on hover */
+        }
+
+</style>
+<body>
+    <div class="form-style-8">
+        <h2>Add Salary</h2>
+        <form action="AddNewMonth" method="post">
+            @Html.TextBoxFor(model => model.UserName, new { @class = "input", type = "text", id = "texts", name = "", required = "required", placeholder = "User Name" })
+
+            @Html.TextBoxFor(model => model.SalaryDate, new { @class = "input", type = "date", id = "texts", name = "", required = "required", placeholder = "Salary Date" })
+
+            @Html.TextBoxFor(model => model.SalaryAmt, new { @class = "input", type = "text", id = "texts", name = "", required = "required", placeholder = "Salary Amount" })
+
+            @Html.TextBoxFor(model => model.CompanyName, new { @class = "input", type = "text", id = "texts", name = "", required = "required", placeholder = "Company Name" })
+
+            <button class="save-button">Save</button>
+
+        </form>
+    </div>
+   
+</body>

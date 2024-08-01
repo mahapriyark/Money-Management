@@ -1,0 +1,298 @@
+﻿@*@model PersonalApp.Models.MonthExpense
+
+    @{
+        ViewBag.Title = "MonthExpenses";
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }
+
+    <!DOCTYPE html>
+
+    <html>
+    <head>
+        <meta name="viewport" content="width=device-width" />
+        <title>MonthExpenseSheet</title>
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.css">
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.7.1/css/buttons.dataTables.min.css">
+
+
+        <style>
+            table {
+                width: 80%;
+                margin-left: border-collapse: collapse;
+                background-color: #2e2e2e;
+                color: #fff;
+            }
+
+            th, td {
+                border: 1px solid #444;
+                padding: 12px;
+                text-align: left;
+                background-color: #2e2e2e;
+            }
+
+
+
+                th input {
+                    width: 100%;
+                    padding: 5px;
+                    box-sizing: border-box;
+                    border: 1px solid #555;
+                    border-radius: 4px;
+                }
+
+                td img {
+                    height: 40px;
+                    width: 40px;
+                    border-radius: 4px;
+                }
+
+            tbody tr:nth-child(even) {
+                background-color: #3c3c3c;
+            }
+
+            tbody tr:hover {
+                background-color: #555;
+            }
+        </style>
+    </head>
+    <body>
+        <br />
+        <br />
+        <div class="container mt-4">
+            <table id="example" class="table-dark">
+                <thead class="table-dark">
+                    <tr>
+                        <th><input type="text" id="search-h1" onkeyup="searchTable(0)" placeholder="Search h1"></th>
+                        <th><input type="text" id="search-h2" onkeyup="searchTable(1)" placeholder="Search h2"></th>
+                        <th><input type="text" id="search-h3" onkeyup="searchTable(2)" placeholder="Search h3"></th>
+                        <th><input type="text" id="search-h4" onkeyup="searchTable(3)" placeholder="Search h4"></th>
+                        <th><input type="text" id="search-h5" onkeyup="searchTable(4)" placeholder="Search h5"></th>
+
+                    </tr>
+                    <tr class="table-dark">
+                        <th>ICONS</th>
+                        <th>CATEGORY NAME</th>
+                        <th>DESCRIPTION</th>
+                        <th>AMOUNT</th>
+                        <th>DATE</th>
+                    </tr>
+
+
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.monthExpenseList)
+                    {
+                        <tr>
+                            <td><img src="@Url.Content(item.ImageUrl)" style="height: 30px; width: 30px;"></td>
+                            <td>@item.IamgeName</td>
+                            <td>@item.Description</td>
+                            <td>@item.Amount</td>
+                            <td>@item.DateTime.ToLongDateString()</td>
+                        </tr>
+                    }
+
+
+                </tbody>
+            </table>
+        </div>
+
+        <script>
+            function searchTable(columnIndex) {
+                var input, filter, table, tr, td, i, txtValue;
+                input = document.getElementById("search-h" + (columnIndex + 1));
+                filter = input.value.toUpperCase();
+                table = document.querySelector("table");
+                tr = table.getElementsByTagName("tr");
+
+                for (i = 2; i < tr.length; i++) { // Start from 2 to skip the header rows
+                    td = tr[i].getElementsByTagName("td")[columnIndex];
+                    if (td) {
+                        txtValue = td.textContent || td.innerText;
+                        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                            tr[i].style.display = "";
+                        } else {
+                            tr[i].style.display = "none";
+                        }
+                    }
+                }
+            }
+        </script>
+        <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+        <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/buttons/1.7.1/js/dataTables.buttons.min.js"></script>
+        <script src="https://cdn.datatables.net/buttons/1.7.1/js/buttons.flash.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+        <script src="https://cdn.datatables.net/buttons/1.7.1/js/buttons.html5.min.js"></script>
+        <script src="https://cdn.datatables.net/buttons/1.7.1/js/buttons.print.min.js"></script>
+        <script>
+            $(document).ready(function () {
+                var table = $('#example').DataTable({
+                    dom: 'Bfrtip',
+                    buttons: [
+                        'copy', 'csv', 'excel', 'pdf', 'print'
+                    ],
+                    scrollY: '65vh',
+                    scrollCollapse: true,
+                    paging: false,
+                    ordering: false
+
+                });
+
+                // Apply the search
+                table.columns().every(function () {
+                    var that = this;
+                    $('input', this.header()).on('keyup change clear', function () {
+                        if (that.search() !== this.value) {
+                            that.search(this.value).draw();
+                        }
+                    });
+                });
+            });
+        </script>
+
+    </body>
+    </html >*@
+
+
+
+
+@model PersonalApp.Models.MonthExpense
+
+@{
+    ViewBag.Title = "MonthExpenses";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>MonthExpenseSheet</title>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.7.1/css/buttons.dataTables.min.css">
+
+    <style>
+        table {
+            width: 80%;
+            margin-left: auto;
+            margin-right: auto;
+            border-collapse: collapse;
+            background-color: #2e2e2e;
+            color: #fff;
+        }
+
+        th, td {
+            border: 1px solid #444;
+            padding: 12px;
+            text-align: left;
+            background-color: #2e2e2e;
+        }
+
+            th input {
+                width: 100%;
+                padding: 5px;
+                box-sizing: border-box;
+                border: 1px solid #555;
+                border-radius: 4px;
+            }
+
+            td img {
+                height: 40px;
+                width: 40px;
+                border-radius: 4px;
+            }
+
+        tbody tr:nth-child(even) {
+            background-color: #3c3c3c;
+        }
+
+        tbody tr:hover {
+            background-color: #555;
+        }
+    </style>
+</head>
+<body>
+    <br />
+    <br />
+    <div class="container mt-4">
+        <table id="example" class="table-dark">
+            <thead class="table-dark">
+                <tr>
+                    <th></th>
+                    <th><input type="text" id="search-h2" placeholder="Search"></th>
+                    <th><input type="text" id="search-h3" placeholder="Search"></th>
+                    <th><input type="text" id="search-h4" placeholder="Search"></th>
+                    <th><input type="text" id="search-h5" placeholder="Search"></th>
+                </tr>
+                <tr class="table-dark">
+                    <th>ICONS</th>
+                    <th>CATEGORY NAME</th>
+                    <th>DESCRIPTION</th>
+                    <th>AMOUNT</th>
+                    <th>DATE</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.monthExpenseList)
+                {
+                    <tr>
+                        <td><img src="@Url.Content(item.ImageUrl)" style="height: 30px; width: 30px;"></td>
+                        <td>@item.IamgeName</td>
+                        <td>@item.Description</td>
+                        <td>@item.Amount</td>
+                        <td>@item.DateTime.ToLongDateString()</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.7.1/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.7.1/js/buttons.flash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.7.1/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.7.1/js/buttons.print.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            var table = $('#example').DataTable({
+                dom: 'Bfrtip',
+                buttons: [
+                    'copy', 'csv', 'excel', 'pdf', 'print'
+                ],
+                scrollY: '65vh',
+                scrollCollapse: true,
+                paging: false,
+                ordering: false
+            });
+
+            $('#search-h1').on('keyup change clear', function () {
+                table.column(0).search(this.value).draw();
+            });
+
+            $('#search-h2').on('keyup change clear', function () {
+                table.column(1).search(this.value).draw();
+            });
+
+            $('#search-h3').on('keyup change clear', function () {
+                table.column(2).search(this.value).draw();
+            });
+
+            $('#search-h4').on('keyup change clear', function () {
+                table.column(3).search(this.value).draw();
+            });
+
+            $('#search-h5').on('keyup change clear', function () {
+                table.column(4).search(this.value).draw();
+            });
+        });
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,424 @@
+﻿@model PersonalApp.Models.HomePageLabelY.TotalExpense
+
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HomePage</title>
+    <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+    <style>
+        @@import "compass/css3";
+        @@import url(https://fonts.googleapis.com/css?family=Lato:400,700,900);
+
+        .contentOfPage {
+            margin-top: 8%;
+        }
+
+        .container {
+            margin: 0 auto;
+            width: 90%;
+            max-width: 1200px;
+        }
+
+        .group:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+
+        .grid-1-5 {
+            border: 2px solid #5d4e65;
+            min-height: 400px;
+            padding: 1.25em;
+            position: relative;
+            text-align: center;
+            transition: all 0.2s ease-in-out;
+
+            @@media screen and (min-width: 700px) {
+                & {
+                    float: left;
+                    width: 50%;
+                }
+
+                    &:nth-child(odd) {
+                        clear: left;
+                    }
+            }
+
+            @@media screen and (min-width: 800px) {
+                & {
+                    width: 33.3333333%;
+                }
+
+                    &:nth-child(3n + 1) {
+                        clear: left;
+                    }
+
+                    &:nth-child(odd) {
+                        clear: none;
+                    }
+            }
+
+            @@media screen and (min-width: 1120px) {
+                & {
+                    width: 20%;
+                }
+
+                    &:nth-child(odd),
+                    &:nth-child(3n + 1) {
+                        clear: none;
+                    }
+            }
+        }
+
+            .grid-1-5:hover {
+                background-color: rgb(83, 69, 91);
+                @@include filter-gradient(#53455b, #201d22, vertical);
+                @@include background-image( linear-gradient(top, rgba(83, 69, 91, 1) 0%, rgba(32, 29, 34, 1) 100%) );
+                border-top: 2px solid #ec7a37;
+                border-bottom: 2px solid #ff4f69;
+                box-shadow: 0px 0px 10px 0px rgba(50, 50, 50, 1);
+                transform: scale(1.025);
+                z-index: 2;
+                &:before, &:after
+
+        {
+            content: "";
+            position: absolute;
+            background-color: rgb(246, 125, 53);
+            @@include filter-gradient(#f67d35, #ff4f68, vertical);
+            @@include background-image( linear-gradient(top, rgba(246, 125, 53, 1) 0%, rgba(255, 79, 104, 1) 100%) );
+            top: -2px;
+            bottom: -2px;
+            width: 2px;
+        }
+
+        &:before {
+            left: -2px;
+        }
+
+        &:after {
+            right: -2px;
+        }
+
+        & .button {
+            background-color: rgb(238, 122, 54);
+            @@include filter-gradient(#ee7a36, #eb495d, horizontal);
+            @@include background-image( linear-gradient(left, rgba(238, 122, 54, 1) 0%, rgba(235, 73, 93, 1) 100%) );
+        }
+
+        }
+
+        h2,
+        h3,
+        p,
+        ul {
+            margin: 0;
+        }
+
+        h2 {
+            font-size: 1em;
+            font-weight: 400;
+            margin: 0 0 0.5em;
+        }
+
+        h3 {
+            font-size: 1.5em;
+            letter-spacing: 0.0625em;
+            margin: 0 0 0.3333333333333333em;
+        }
+
+        p {
+            font-size: 0.875em;
+        }
+
+        p,
+        ul {
+            margin: 0 0 1.5em;
+        }
+
+        ul {
+            color: #796583;
+            font-size: 0.75em;
+            list-style-type: none;
+            padding: 0;
+            li
+
+        {
+            margin: 0 0 0.8333333333333333em;
+        }
+
+        }
+
+        .button {
+            background-color: #9c83aa;
+            border-radius: 20px;
+            color: #fff;
+            font-size: 1em;
+            font-weight: 700;
+            padding: 0.75em 1.5em;
+            position: absolute;
+            bottom: 1.25em;
+            left: 50%;
+            margin-left: -60px;
+            text-decoration: none;
+            width: 120px;
+        }
+
+        .uppercase,
+        .button,
+        h2 {
+            text-transform: uppercase;
+        }
+
+        sup,
+        .small {
+            font-size: 0.6125em;
+        }
+
+
+
+
+
+
+
+
+
+
+        .flex-container {
+            margin-top: 5%;
+            margin-left: 8%;
+            width: 80vw;
+            display: flex;
+        }
+
+            .flex-container > div {
+                background-color: #f1f1f1;
+                margin: 10px;
+                padding: 20px;
+                font-size: 30px;
+                width: 25%;
+                border-radius: 25px;
+            }
+
+        .flex-container2 {
+            margin-left: 8%;
+            width: 80vw;
+            display: flex;
+        }
+
+            .flex-container2 .box1 {
+                background-color: #f1f1f1;
+                margin: 10px;
+                padding: 20px;
+                font-size: 30px;
+                height: 60%;
+                width: 60%;
+                border-radius: 25px;
+            }
+
+            .flex-container2 .box2 {
+                background-color: #f1f1f1;
+                margin: 10px;
+                padding: 20px;
+                font-size: 30px;
+                height: 60%;
+                width: 40%;
+                border-radius: 25px;
+            }
+    </style>
+
+
+
+
+
+
+<script>
+
+</script>
+
+
+
+<script>
+    window.onload = function () {
+
+        var chart = new CanvasJS.Chart("chartContainer", {
+            theme: "light1", // "light1", "light2", "dark1", "dark2"
+            exportEnabled: true,
+            animationEnabled: true,
+            title: {
+                text: "Monthly Expenses"
+            },
+            subtitles: [{
+                text: "2024"
+            }],
+            data: [{
+                type: "pie",
+                startAngle: 180,
+                toolTipContent: "<b>{label}</b>: {y}%",
+                showInLegend: "true",
+                legendText: "{label}",
+                indexLabel: "{label} - {y}%",
+                dataPoints: @Html.Raw(ViewBag.DataPoints)
+	        }]
+        });
+        chart.render();
+
+
+
+        var chart = new CanvasJS.Chart("chartContainers", {
+            exportEnabled: true,
+	animationEnabled: true,
+	theme: "light2",
+	title: {
+		text: "Expense Tracker"
+	},
+	axisX: {
+		valueFormatString: "MMM",
+		intervalType: "month",
+		interval: 1
+	},
+        axisY: [{
+            title: "Precipitation",
+            lineThickness: 1,
+            minimum: 0,  // Set minimum value for the y-axis
+            maximum: 50000,  // Set maximum value for the y-axis
+            interval: 5000  // Set interval for the y-axis
+        }],
+	toolTip: {
+		shared: true
+	},
+	legend: {
+		cursor: "pointer",
+		itemclick: toogleDataSeries
+	},
+	data: [{
+		type: "column",
+		name: "Salary",
+		showInLegend: true,
+		xValueFormatString: "MMMM",
+		yValueFormatString: "#,##0.## Rs/-",
+		xValueType: "dateTime",
+		dataPoints:  @Html.Raw(ViewBag.DataPoints1)
+	}, {
+		type: "line",
+		name: "Expenses",
+		showInLegend: true,
+		axisYIndex: 1,
+		yValueFormatString: "#,##0.## Rs/-",
+		xValueType: "dateTime",
+		dataPoints:  @Html.Raw(ViewBag.DataPoints2)
+	}, {
+		type: "line",
+		name: "Balance",
+		showInLegend: true,
+		axisYIndex: 1,
+		yValueFormatString: "#,##0.## Rs/-",
+		xValueType: "dateTime",
+		dataPoints:  @Html.Raw(ViewBag.DataPoints3)
+	}]
+});
+chart.render();
+
+function toogleDataSeries(e) {
+	if (typeof (e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+		e.dataSeries.visible = false;
+	} else {
+		e.dataSeries.visible = true;
+	}
+	chart.render();
+}
+
+
+
+    }
+</script>
+
+
+
+</head>
+<body>
+   
+    <div class="flex-container">
+
+        <div>
+            <table>
+                <tr>
+                    <td> <img style="height: 70%; width: 30%;" src="~/Contents/salary.png" /></td>
+                    <td><b>@ViewBag.Salary</b></td>
+                </tr>
+            </table>
+        </div>
+        <div>
+            <table>
+                <tr>
+                    <td> <img style="height: 70%; width: 30%;" src="~/Contents/saving.png" /></td>
+                    <td>
+                        @{
+                            if ((Convert.ToInt32(ViewBag.Salary) - Convert.ToInt32(Model.totalAmountExpenses)) <= 0)
+                            {
+                                <b>0</b>
+                            }
+                            else
+                            {
+                                <b>@(Convert.ToInt32(ViewBag.Salary) - Convert.ToInt32(Model.totalAmountExpenses))</b>
+                            }
+                    }
+
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div>
+        <table>
+            <tr>
+                <td> <img style="height: 70%; width: 30%;" src="~/Contents/poor.png" /></td>
+                <td><b>@Model.totalAmountExpenses</b></td>
+            </tr>
+        </table>
+    </div>
+    <div>
+        <table>
+            <tr>
+                <td><img style="height: 70%; width: 30%;" src="~/Contents/piggy-bank.png" /> </td>
+                <td> <b>@ViewBag.TotalAmountBalance</b></td>
+            </tr>
+        </table>
+    </div>
+    </div>
+
+        <div class="flex-container2">
+
+            <div class="box2">
+
+                <div id="chartContainer" style="height: 370px; width: 100%;"></div>
+                <script src="https://cdn.canvasjs.com/canvasjs.min.js"></script>
+            </div>
+
+            <div class="box1">
+                <div id="chartContainers" style="height: 370px; width: 100%;"></div>
+                <script src="https://cdn.canvasjs.com/canvasjs.min.js"></script>
+            </div>
+        </div>
+
+    <script>
+        let arrow = document.querySelectorAll(".arrow");
+        for (var i = 0; i < arrow.length; i++) {
+            arrow[i].addEventListener("click", (e) => {
+                let arrowParent = e.target.parentElement.parentElement; 
+                arrowParent.classList.toggle("showMenu");
+            });
+        }
+        let sidebar = document.querySelector(".sidebar");
+        let sidebarBtn = document.querySelector(".bx-menu");
+        console.log(sidebarBtn);
+        sidebarBtn.addEventListener("click", () => {
+            sidebar.classList.toggle("close");
+        });
+    </script>
+</body>
+</html >

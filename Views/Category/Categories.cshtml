@@ -1,0 +1,527 @@
+﻿@model PersonalApp.Models.Category
+
+@{
+    ViewBag.Title = "MonthExpenses";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Categories</title>
+    <style>
+        .cards-container {
+            width: 90%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-top: 2%;
+            margin-left: 5%;
+            margin-right: 2%;
+        }
+
+        .cards-heading {
+            font-size: 2rem;
+            color: #213979;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 25px;
+            z-index: 9;
+            padding: 2%;
+            align-content: center;
+        }
+
+            .cards .card {
+                min-height: 120px;
+                align-content: center;
+                text-align: center;
+                width: 120px;
+                display: flex;
+                justify-content: center;
+                flex-direction: column;
+                background-color: #11101d;
+                position: relative;
+                padding: 4%;
+                border-radius: 60px;
+                margin: 10px;
+                font-style: normal;
+            }
+
+        .card img {
+            margin-left: 15%;
+            height: 70%;
+            width: 70%;
+        }
+
+        .cards .card i {
+            font-size: 2.4rem;
+            color: var(--primary-color);
+        }
+
+        .cards .card h3 {
+            font-size: 1rem;
+            color: #fff;
+            margin-bottom: 20px;
+        }
+
+        .cards .card .content p {
+            background: rgba();
+        }
+
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0,0,0);
+            background-color: rgba(0,0,0,0.4);
+            padding-top: 60px;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+        }
+
+            .modal-content .cards {
+                display: grid;
+                grid-template-columns: repeat(9, 1fr);
+                gap: 25px;
+                z-index: 9;
+                padding: 2%;
+                align-content: center;
+            }
+
+                .modal-content .cards .card {
+                    min-height: 80px;
+                    align-content: center;
+                    text-align: center;
+                    width: 80px;
+                    display: flex;
+                    justify-content: flex-start;
+                    flex-direction: column;
+                    background-color: #11101d;
+                    position: relative;
+                    padding: 4%;
+                    border-radius: 50px;
+                    margin: 10px;
+                    font-style: normal;
+                }
+
+        /* .modal-content .card img {
+                margin-left: 30%;
+                height: 45%;
+                width: 50%;
+            }*/
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+            .close:hover,
+            .close:focus {
+                color: black;
+                text-decoration: none;
+                cursor: pointer;
+            }
+
+
+        /* Popup form style */
+        .popup-form {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            /*background-color: rgba(0, 0, 0, 0.5);*/
+        }
+
+        .form-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 2px solid black;
+            width: 80%;
+            max-width: 400px;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+            animation: animatezoom 0.6s;
+            text-align: center;
+            background-color: dimgray;
+            border-radius: 20px;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+        .form-content h2{
+            color: white;
+        }
+        .form-content label{
+            color: white;
+        }
+
+        .form-content text{
+            background-color: white;
+            color: black;
+        }
+
+        tr{
+            margin-bottom: 10px;
+           
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+            .close:hover,
+            .close:focus {
+                color: black;
+                text-decoration: none;
+                cursor: pointer;
+            }
+
+        @@keyframes animatezoom {
+            from {
+                transform: scale(0)
+            }
+
+            to {
+                transform: scale(1)
+            }
+        }
+
+
+        #close {
+            overflow: hidden;
+            position: relative;
+            border: none;
+            padding: 0;
+            width: 2em;
+            height: 2em;
+            border-radius: 50%;
+            background: transparent;
+            color: black;
+            font: inherit;
+            text-indent: 100%;
+            cursor: pointer;
+
+            &:focus
+
+        {
+            outline: solid 0 transparent;
+            box-shadow: 0 0 0 2px #8ed0f9
+        }
+
+        &:hover {
+            background: rgba(29, 161, 142, .1)
+        }
+
+        &:before, &:after {
+            position: absolute;
+            top: 15%;
+            right: calc(50% - .0625em);
+            width: .125em;
+            height: 70%;
+            border-radius: .125em;
+            transform: rotate(45deg);
+            background: currentcolor;
+            content: ''
+        }
+
+        &:after {
+            transform: rotate(-45deg);
+        }
+
+        }
+
+
+        .form-table {
+            width: 100%;
+            border-collapse: collapse;
+            align-items: center;
+        }
+
+            .form-table td {
+                padding: 10px;
+                vertical-align: top;
+            }
+
+                .form-table td:first-child {
+                    text-align: right;
+                    padding-right: 10px;
+                    white-space: nowrap;
+                }
+
+                .form-table td:last-child {
+                    width: 100%;
+                }
+
+        .form-content {
+            max-width: 400px;
+        }
+    </style>
+
+</head>
+<body>
+
+
+    <div class="container mt-3 shadow rounded" style="background:#fff;">
+        <div class="cards">
+
+            @foreach (var image in Model.defaultIconsList)
+            {
+                <div class="card">
+                    <img src="@Url.Content(image.ImageUrl)" class="imageClick" data-category-name="@image.ImageName" />
+                </div>
+            }
+            <div class="card">
+                <img src="~/Contents/add.png" alt="Add Icon" />
+                <div class="content">
+                    <a href="javascript:void(0);" class="btn btn-white btn-animate" id="clickButton" style="color: white;">Add</a>
+                </div>
+            </div>
+
+            <div id="myModal" class="modal">
+                
+                <div class="modal-content">
+                    <button id='close' onclick="closeForm()" style="margin-left: auto;">close</button>
+                    <div class="cards-container">
+                        <h2 class="cards-heading">Add categories</h2>
+                        <div class="cards">
+                            @foreach (var image in Model.imagesList)
+                            {
+                                <div class="card">
+                                    <img src="@Url.Content(image.ImageUrl)" class="imageClick" data-category-name="@image.ImageName" />
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            @using (Html.BeginForm("Categories", "Category", FormMethod.Post, new { enctype = "multipart/form-data", id = "myForm" }))
+            {
+                <div id="popupForm" class="popup-form" style="display:none;">
+                    <div class="form-content">
+                        @*<button id='close' onclick="closeForms()">close</button>*@
+                        <h2>Add Details</h2>
+
+                        <table class="form-table">
+                            <tr>
+                                <td>
+                                    @Html.Label("Category", "Category")
+                                </td>
+                                <td>
+                                    @Html.TextBoxFor(model => model.CategoryName, new { @class = "", id = "categoryInput", name = "CategoryName" })
+                                    @Html.HiddenFor(model => model.Categories, new { @class = "", id = "CategoryUrlInput", name = "" })
+                                    <br />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    @Html.Label("Date", "Date")
+                                </td>
+                                <td>
+                                    @Html.TextBoxFor(model => model.Date, new { @class = "", id = "dateInput", type = "date", name = "Date" })
+                                    <br />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    @Html.Label("Tag Name", "Tag Name")
+                                </td>
+                                <td>
+                                    <select id="Tagname" name="" onchange="updateTagName(this)">
+                                        <option value="Select Tagname">Select Tagname</option>
+                                        @{
+                                            var uniqueTagName = Model.tagNameList
+                                                .Where(p => !string.IsNullOrEmpty(p.TagName))
+                                                .Select(p => p.TagName)
+                                                .Distinct()
+                                                .ToList();
+                                        }
+
+                                        @foreach (var tagname in uniqueTagName)
+                                        {
+                                            <option value="@tagname">@tagname</option>
+                                        }
+                                        @Html.HiddenFor(m => m.TagName, new { @class = "", required = "required" })
+                                        @Html.ValidationMessageFor(model => model.TagName, "", new { @class = "" })
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    @Html.Label("Description", "Description")
+                                </td>
+                                <td>
+                                    @Html.TextBoxFor(model => model.Description, new { @class = "", id = "descriptionInput", name = "Description" })
+                                    <br />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    @Html.Label("Amount", "Amount")
+                                </td>
+                                <td>
+                                    @Html.TextBoxFor(model => model.Amount, new { @class = "", id = "amountInput", name = "Amount" })
+                                    <br />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><input type="submit" value="Submit"></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            }
+
+
+
+
+            <!-- The Modal -->
+
+        </div>
+    </div>
+
+    <script>
+        function updateTagName(selectElement) {
+            var selectedValue = selectElement.value;
+            document.getElementById("TagName").value = selectedValue;
+        }
+    </script>
+
+    <script>
+        var $table = $('#table');
+        $(function () {
+            $('#toolbar').find('select').change(function () {
+                $table.bootstrapTable('refreshOptions', {
+                    exportDataType: $(this).val()
+                });
+            });
+        })
+
+        var trBoldBlue = $("table");
+
+        $(trBoldBlue).on("click", "tr", function () {
+            $(this).toggleClass("bold-blue");
+        });
+    </script>
+
+
+    <script>
+        function closeForm() {
+            document.getElementById("myModal").style.display = "none";
+        }
+        function closeForms() {
+            document.getElementById("popupForm").style.display = "none";
+        }
+
+        function getRelativeUrl(fullUrl) {
+            const baseUrl = window.location.origin; 
+            let relativeUrl = fullUrl.replace(baseUrl, ''); 
+            if (relativeUrl.startsWith('/')) {
+                relativeUrl = '~' + relativeUrl; 
+            }
+            return relativeUrl;
+        }
+
+        // Example usage
+        document.addEventListener("DOMContentLoaded", function () {
+            const images = document.querySelectorAll('.imageClick');
+            const popupForm = document.getElementById('popupForm');
+            const categoryUrlInput = document.getElementById('CategoryUrlInput');
+            const categoryInput = document.getElementById('categoryInput');
+            const dateInput = document.getElementById('dateInput');
+
+            images.forEach(image => {
+                image.addEventListener('click', function () {
+                    const imageUrl = image.src;
+                    const relativeUrl = getRelativeUrl(imageUrl);
+                    categoryUrlInput.value = relativeUrl;
+
+                    const categoryName = image.getAttribute('data-category-name');
+                    categoryInput.value = categoryName;
+
+                    const today = new Date().toISOString().split('T')[0];
+                    dateInput.value = today;
+
+                    popupForm.style.display = 'block';
+                });
+            });
+        });
+        var modal = document.getElementById("myModal");
+        var btn = document.getElementById("clickButton");
+        var span = document.getElementsByClassName("close")[0];
+
+        btn.onclick = function () {
+            modal.style.display = "block";
+        }
+
+        span.onclick = function () {
+            modal.style.display = "none";
+        }
+
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
+
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var images = document.querySelectorAll(".imageClick");
+
+            images.forEach(function (image) {
+                image.addEventListener("click", function () {
+                    var popupForm = document.getElementById("popupForm");
+                    popupForm.style.display = "block";
+                });
+            });
+
+            // Close the form when clicking outside of it
+            window.addEventListener("click", function (event) {
+                var popupForm = document.getElementById("popupForm");
+                if (event.target == popupForm) {
+                    popupForm.style.display = "none";
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+
+ 
